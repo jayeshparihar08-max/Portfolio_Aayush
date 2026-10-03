@@ -4,76 +4,20 @@
     min-height: 100dvh;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     padding: 2.5rem 3.5rem;
     overflow: hidden;
 }
 
-/* Header & Footer Layout */
-.hero-header, .hero-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+/* Timeline Header */
+.hero-header-timeline {
+    position: absolute;
+    top: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 10;
-    position: relative;
-    pointer-events: none; /* Let clicks pass through if empty */
 }
 
-.hero-header > *, .hero-footer > * {
-    pointer-events: auto; /* Re-enable for links and text */
-}
-
-.hero-footer {
-    align-items: flex-end;
-}
-
-/* Supporting Typography */
-.hero-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.hero-info .name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-}
-
-.hero-info .role {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-text-muted);
-}
-
-.hero-year {
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
-/* Socials */
-.hero-socials {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-}
-
-.hero-socials a {
-    display: inline-flex;
-    transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.hero-socials a:hover {
-    color: var(--color-accent);
-    transform: translateY(-3px);
-}
-
-.hero-socials svg {
-    width: 24px;
-    height: 24px;
-}
-
-/* Timeline */
 .hero-timeline {
     font-weight: 500;
     font-size: 0.95rem;
@@ -91,27 +35,70 @@
 
 /* Main Composition */
 .hero-composition {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative;
     width: 100%;
+    max-width: 1800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    /* Spacing between avatar and text */
+    gap: 1vw; 
+    pointer-events: none; 
+}
+
+/* Avatar Layout */
+.hero-avatar-wrapper {
+    position: relative;
+    z-index: 3;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    pointer-events: none; 
+    height: clamp(300px, 45vh, 600px); /* Height visually comparable to text */
+}
+
+.hero-avatar {
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0px 15px 30px rgba(0,0,0,0.15));
+}
+
+.hero-shadow {
+    width: 180px;
+    height: 18px;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%;
+    margin-top: -10px;
+    z-index: -1;
+}
+
+/* Text Block Layout */
+.hero-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-label-name {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 2vw; /* Push up above the P */
+    margin-left: 0.5vw;
 }
 
 .hero-title {
     font-family: var(--font-display);
-    font-size: clamp(5rem, 18vw, 18rem);
+    font-size: clamp(5rem, 14vw, 15rem);
     line-height: 0.85;
     text-transform: uppercase;
     color: var(--color-text);
-    text-align: center;
     letter-spacing: 0.01em;
-    z-index: 1;
+    white-space: nowrap;
     
     /* Strong Physical Extrusion using layered text-shadows */
     text-shadow: 
@@ -136,39 +123,50 @@
         19px 19px 0px var(--color-accent),
         20px 20px 0px var(--color-accent),
         25px 25px 30px rgba(0,0,0,0.15); /* Soft drop shadow behind the extrusion */
-        
-    /* Offset vertically to interact with the avatar */
-    transform: translateY(12vh);
 }
 
-.hero-avatar-wrapper {
-    position: relative;
-    z-index: 2;
+/* Individual letter tracking for later animation */
+.letter-p, .letters-rest {
+    display: inline-block;
+}
+
+.hero-label-bottom {
+    align-self: flex-end;
+    text-align: right;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    /* Move up to overlap the PORTFOLIO text */
-    transform: translateY(-8vh);
+    margin-top: 3vw; /* Push down away from the extrusion shadow */
+    margin-right: 0.5vw;
 }
 
-.hero-avatar {
-    height: 55vh;
-    max-height: 700px;
-    object-fit: contain;
-    /* Grounding is handled by the shadow element, but a subtle ambient drop shadow helps volume */
-    filter: drop-shadow(0px 20px 40px rgba(0,0,0,0.15));
+.hero-label-bottom .year {
+    font-size: 1.35rem;
+    font-weight: 700;
+    line-height: 1.1;
 }
 
-.hero-shadow {
-    width: 250px;
-    height: 25px;
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%);
-    border-radius: 50%;
-    margin-top: -15px;
-    z-index: -1;
+.hero-label-bottom .role {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
 }
 
 /* Responsive Fallbacks */
+@media (max-width: 1024px) {
+    .hero-composition {
+        flex-direction: column;
+        gap: 3rem;
+    }
+    
+    .hero-avatar-wrapper {
+        height: 35vh;
+    }
+    
+    .hero-title {
+        font-size: 18vw;
+    }
+}
+
 @media (max-width: 768px) {
     .hero {
         padding: 1.5rem;
@@ -187,29 +185,5 @@
             9px 9px 0px var(--color-accent),
             10px 10px 0px var(--color-accent),
             15px 15px 20px rgba(0,0,0,0.1);
-        transform: translateY(8vh);
-    }
-    
-    .hero-avatar {
-        height: 40vh;
-    }
-    
-    .hero-avatar-wrapper {
-        transform: translateY(-4vh);
-    }
-    
-    .hero-shadow {
-        width: 180px;
-        height: 15px;
-        margin-top: -10px;
-    }
-    
-    .hero-socials {
-        flex-direction: row;
-        gap: 1rem;
-    }
-    
-    .hero-timeline {
-        font-size: 0.8rem;
     }
 }
