@@ -1,3 +1,36 @@
+/* Loader */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-bg);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loader-dot {
+    width: 24px;
+    height: 24px;
+    background-color: var(--color-accent);
+    border-radius: 50%;
+    animation: loader-pulse 1s infinite alternate;
+}
+
+@keyframes loader-pulse {
+    0% { transform: scale(0.8); opacity: 0.5; }
+    100% { transform: scale(1.2); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .loader-overlay {
+        display: none !important;
+    }
+}
+
 .hero {
     position: relative;
     width: 100%;
@@ -100,33 +133,34 @@
     letter-spacing: 0.01em;
     white-space: nowrap;
     
-    /* Strong Physical Extrusion using layered text-shadows */
+    /* Strong Physical Extrusion using layered text-shadows driven by --depth variable */
+    --depth: 1;
     text-shadow: 
-        1px 1px 0px var(--color-accent),
-        2px 2px 0px var(--color-accent),
-        3px 3px 0px var(--color-accent),
-        4px 4px 0px var(--color-accent),
-        5px 5px 0px var(--color-accent),
-        6px 6px 0px var(--color-accent),
-        7px 7px 0px var(--color-accent),
-        8px 8px 0px var(--color-accent),
-        9px 9px 0px var(--color-accent),
-        10px 10px 0px var(--color-accent),
-        11px 11px 0px var(--color-accent),
-        12px 12px 0px var(--color-accent),
-        13px 13px 0px var(--color-accent),
-        14px 14px 0px var(--color-accent),
-        15px 15px 0px var(--color-accent),
-        16px 16px 0px var(--color-accent),
-        17px 17px 0px var(--color-accent),
-        18px 18px 0px var(--color-accent),
-        19px 19px 0px var(--color-accent),
-        20px 20px 0px var(--color-accent),
-        25px 25px 30px rgba(0,0,0,0.15); /* Soft drop shadow behind the extrusion */
+        calc(1px * var(--depth)) calc(1px * var(--depth)) 0px var(--color-accent),
+        calc(2px * var(--depth)) calc(2px * var(--depth)) 0px var(--color-accent),
+        calc(3px * var(--depth)) calc(3px * var(--depth)) 0px var(--color-accent),
+        calc(4px * var(--depth)) calc(4px * var(--depth)) 0px var(--color-accent),
+        calc(5px * var(--depth)) calc(5px * var(--depth)) 0px var(--color-accent),
+        calc(6px * var(--depth)) calc(6px * var(--depth)) 0px var(--color-accent),
+        calc(7px * var(--depth)) calc(7px * var(--depth)) 0px var(--color-accent),
+        calc(8px * var(--depth)) calc(8px * var(--depth)) 0px var(--color-accent),
+        calc(9px * var(--depth)) calc(9px * var(--depth)) 0px var(--color-accent),
+        calc(10px * var(--depth)) calc(10px * var(--depth)) 0px var(--color-accent),
+        calc(11px * var(--depth)) calc(11px * var(--depth)) 0px var(--color-accent),
+        calc(12px * var(--depth)) calc(12px * var(--depth)) 0px var(--color-accent),
+        calc(13px * var(--depth)) calc(13px * var(--depth)) 0px var(--color-accent),
+        calc(14px * var(--depth)) calc(14px * var(--depth)) 0px var(--color-accent),
+        calc(15px * var(--depth)) calc(15px * var(--depth)) 0px var(--color-accent),
+        calc(16px * var(--depth)) calc(16px * var(--depth)) 0px var(--color-accent),
+        calc(17px * var(--depth)) calc(17px * var(--depth)) 0px var(--color-accent),
+        calc(18px * var(--depth)) calc(18px * var(--depth)) 0px var(--color-accent),
+        calc(19px * var(--depth)) calc(19px * var(--depth)) 0px var(--color-accent),
+        calc(20px * var(--depth)) calc(20px * var(--depth)) 0px var(--color-accent),
+        calc(25px * var(--depth)) calc(25px * var(--depth)) calc(30px * var(--depth)) rgba(0,0,0,0.15);
 }
 
 /* Individual letter tracking for later animation */
-.letter-p, .letters-rest {
+.letter-p, .letters-rest .letter {
     display: inline-block;
 }
 
