@@ -25,34 +25,84 @@ document.addEventListener("DOMContentLoaded", () => {
     // Define Social Loop Timeline
     const socialTl = gsap.timeline({ repeat: -1, paused: true });
     const socialWrappers = document.querySelectorAll('.social-wrapper');
+    const socialLabel = document.querySelector('.social-label');
+    
+    // Label fades in once the loop starts
+    if (socialLabel) {
+        socialTl.to(socialLabel, { opacity: 1, duration: 1, ease: "power2.out" }, 0);
+    }
 
     socialWrappers.forEach((wrapper, index) => {
         const iconTl = gsap.timeline();
+        const accent = wrapper.querySelector('.social-accent');
+        const ring = wrapper.querySelector('circle');
+        const circle = wrapper.querySelector('.social-circle');
+        const container = wrapper.querySelector('.social-container');
         
-        // Opacity and pointer-events state
-        iconTl.fromTo(wrapper, { opacity: 0 }, { 
-            opacity: 1, 
-            duration: 0.8, 
-            ease: "power2.out",
-            onStart: () => wrapper.classList.add('is-active')
-        }, 0);
+        // 1. Enable pointer events early
+        iconTl.call(() => wrapper.classList.add('is-active'), [], 0);
         
-        iconTl.to(wrapper, { 
-            opacity: 0, 
-            duration: 0.8, 
+        // 2. Entrance (Fast, rotational arrival)
+        iconTl.fromTo(wrapper, 
+            { opacity: 0, scale: 0.65, rotation: -15, x: -20, y: -10 },
+            { opacity: 1, scale: 1, rotation: 0, x: 0, y: 0, duration: 0.5, ease: "back.out(1.5)" },
+            0
+        );
+
+        // 3. Orange accent pop
+        iconTl.fromTo(accent,
+            { x: 0, y: 0 },
+            { x: 4, y: 4, duration: 0.3, ease: "back.out(2)" },
+            0.2 // slight delay after entrance begins
+        );
+
+        // 4. Circular highlight draws around
+        iconTl.fromTo(ring,
+            { strokeDashoffset: 214 },
+            { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut" },
+            0.3
+        );
+        iconTl.to(ring, { opacity: 0, duration: 0.3 }, 1.0); // fades away
+
+        // 5. Short curved float while active
+        // Animate the inner container to avoid conflicting with wrapper entrance/exit coordinates
+        iconTl.fromTo(container, 
+            { x: 0, y: 0, rotation: 0 },
+            { x: 8, y: -8, rotation: 3, duration: 1.5, ease: "sine.inOut", yoyo: true, repeat: 1 }, 
+            0.5
+        );
+
+        // 6. Exit
+        iconTl.to(wrapper, {
+            scale: 1.1,
+            x: 15,
+            y: -15,
+            rotation: 10,
+            opacity: 0,
+            duration: 0.4,
             ease: "power2.in",
-            onComplete: () => wrapper.classList.remove('is-active')
-        }, 2.2);
+            onComplete: () => {
+                wrapper.classList.remove('is-active');
+                gsap.set(ring, { opacity: 1, strokeDashoffset: 214 });
+                gsap.set(accent, { x: 0, y: 0 });
+            }
+        }, 3.0); // Hold active for 2.5s (0.5 to 3.0)
+
+        // Add to main loop with overlap
+        socialTl.add(iconTl, index > 0 ? "-=0.3" : 0.5); // Add a 0.5s delay before first icon, so label appears first
         
-        // Orbital X motion (arc width)
-        iconTl.fromTo(wrapper, { x: -12 }, { x: 12, duration: 3, ease: "sine.inOut" }, 0);
-        
-        // Orbital Y motion (arc height)
-        iconTl.fromTo(wrapper, { y: 5 }, { y: -8, duration: 1.5, ease: "sine.inOut" }, 0);
-        iconTl.to(wrapper, { y: 5, duration: 1.5, ease: "sine.inOut" }, 1.5);
-        
-        // Stagger overlap
-        socialTl.add(iconTl, index > 0 ? "-=0.2" : 0);
+        // Hover interactions (slow down timeline, pop accent)
+        wrapper.addEventListener('mouseenter', () => {
+            if (!wrapper.classList.contains('is-active')) return;
+            gsap.to(socialTl, { timeScale: 0.2, duration: 0.3 });
+            gsap.to(accent, { x: 6, y: 6, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+            gsap.to(circle, { scale: 1.05, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+        });
+        wrapper.addEventListener('mouseleave', () => {
+            gsap.to(socialTl, { timeScale: 1, duration: 0.3 });
+            gsap.to(accent, { x: 4, y: 4, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+            gsap.to(circle, { scale: 1, duration: 0.3, ease: "power2.out", overwrite: "auto" });
+        });
     });
 
     // 1. Loading Out
