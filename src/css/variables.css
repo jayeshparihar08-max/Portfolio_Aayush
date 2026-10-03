@@ -1,0 +1,9 @@
+:root {
+    --color-bg: #F2F2EE;
+    --color-text: #000000;
+    --color-accent: #F5A100;
+    --color-text-muted: #7A7A7A;
+    
+    --font-display: 'Anton', sans-serif;
+    --font-body: 'Space Grotesk', sans-serif;
+}
