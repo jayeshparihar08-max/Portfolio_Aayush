@@ -185,6 +185,53 @@
     color: var(--color-text-muted);
 }
 
+/* Social Loop Area */
+.hero-socials-loop {
+    position: absolute;
+    right: -4vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    z-index: 5;
+}
+
+.social-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none; /* Let clicks pass through when hidden */
+}
+
+/* Enable pointer events only when fully visible via GSAP logic */
+.social-wrapper.is-active {
+    pointer-events: auto;
+}
+
+.social-icon {
+    width: 100%;
+    height: 100%;
+    color: var(--color-text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-icon:hover {
+    color: var(--color-accent);
+    transform: scale(1.15);
+}
+
+.social-icon svg {
+    width: 24px;
+    height: 24px;
+    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
+}
+
 /* Responsive Fallbacks */
 @media (max-width: 1024px) {
     .hero-composition {
@@ -220,4 +267,34 @@
             10px 10px 0px var(--color-accent),
             15px 15px 20px rgba(0,0,0,0.1);
     }
+
+    .hero-socials-loop {
+        top: auto;
+        bottom: -4rem;
+        right: 0;
+        transform: none;
+    }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-socials-loop {
+        position: absolute;
+        right: -4vw;
+        top: auto;
+        bottom: 0;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        transform: none;
+    }
+    
+    .social-wrapper {
+        position: relative;
+        opacity: 1 !important;
+        pointer-events: auto;
+        transform: none !important;
+    }
+}
+
+

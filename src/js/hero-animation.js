@@ -22,6 +22,39 @@ document.addEventListener("DOMContentLoaded", () => {
     const tl = gsap.timeline();
     const depthProxy = { val: 0 }; // For tweening CSS variable
 
+    // Define Social Loop Timeline
+    const socialTl = gsap.timeline({ repeat: -1, paused: true });
+    const socialWrappers = document.querySelectorAll('.social-wrapper');
+
+    socialWrappers.forEach((wrapper, index) => {
+        const iconTl = gsap.timeline();
+        
+        // Opacity and pointer-events state
+        iconTl.fromTo(wrapper, { opacity: 0 }, { 
+            opacity: 1, 
+            duration: 0.8, 
+            ease: "power2.out",
+            onStart: () => wrapper.classList.add('is-active')
+        }, 0);
+        
+        iconTl.to(wrapper, { 
+            opacity: 0, 
+            duration: 0.8, 
+            ease: "power2.in",
+            onComplete: () => wrapper.classList.remove('is-active')
+        }, 2.2);
+        
+        // Orbital X motion (arc width)
+        iconTl.fromTo(wrapper, { x: -12 }, { x: 12, duration: 3, ease: "sine.inOut" }, 0);
+        
+        // Orbital Y motion (arc height)
+        iconTl.fromTo(wrapper, { y: 5 }, { y: -8, duration: 1.5, ease: "sine.inOut" }, 0);
+        iconTl.to(wrapper, { y: 5, duration: 1.5, ease: "sine.inOut" }, 1.5);
+        
+        // Stagger overlap
+        socialTl.add(iconTl, index > 0 ? "-=0.2" : 0);
+    });
+
     // 1. Loading Out
     tl.to(loader, {
         opacity: 0,
@@ -119,5 +152,9 @@ document.addEventListener("DOMContentLoaded", () => {
           y: 0,
           duration: 0.5,
           ease: "power2.out"
-      }, "support+=0.3");
+      }, "support+=0.3")
+      // 7. Start Social Loop
+      .add(() => {
+          if (!reducedMotion) socialTl.play();
+      }, "support+=0.8");
 });
