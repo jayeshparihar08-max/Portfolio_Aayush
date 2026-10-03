@@ -108,13 +108,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // 1. Loading Out
     tl.to(loader, {
         opacity: 0,
-        duration: 0.3,
-        delay: 0.1, // very short load
+        duration: 0.2,
         onComplete: () => loader.style.display = 'none'
-    });
+    }, 0); // Start immediately at time 0
 
     // 2. Avatar Enters (Fast, physical, confident)
-    tl.addLabel("avatarEnter")
+    tl.addLabel("avatarEnter", 0.05) // Start almost instantly, overlapping the loader fade
       .to(".hero-avatar-wrapper", {
           opacity: 1,
           duration: 0.1 // quick fade in as it enters
@@ -203,8 +202,29 @@ document.addEventListener("DOMContentLoaded", () => {
           duration: 0.5,
           ease: "power2.out"
       }, "support+=0.3")
-      // 7. Start Social Loop
+      // 7. Start Post-Intro Loops
       .add(() => {
-          if (!reducedMotion) socialTl.play();
+          if (!reducedMotion) {
+              socialTl.play();
+              
+              // Continuous Avatar Float
+              gsap.to(".hero-avatar", {
+                  y: -6, // subtle upward float
+                  duration: 2, // 2 seconds up, 2 seconds down = 4s total cycle
+                  ease: "sine.inOut",
+                  yoyo: true,
+                  repeat: -1
+              });
+              
+              // Continuous Shadow Pulse
+              gsap.to(".hero-shadow", {
+                  scale: 0.85, // shrinks slightly as avatar rises
+                  opacity: 0.5, // fades slightly
+                  duration: 2,
+                  ease: "sine.inOut",
+                  yoyo: true,
+                  repeat: -1
+              });
+          }
       }, "support+=0.8");
 });
