@@ -116,12 +116,15 @@
 }
 
 .hero-label-name {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.5vw, 3rem); /* 32px to 48px target */
+    font-weight: 400;
+    letter-spacing: 0.03em;
+    color: var(--color-text);
     line-height: 1;
-    margin-bottom: 2vw; /* Push up above the P */
+    margin-bottom: 0.5vw; /* Positioned deliberately above the P */
     margin-left: 0.5vw;
+    text-shadow: 2px 2px 0px var(--color-accent); /* Subtle physical depth */
 }
 
 .hero-title {
@@ -288,6 +291,94 @@
 /* Hover Effects */
 .social-wrapper.is-active:hover .social-circle {
     transform: scale(1.05);
+}
+
+/* =========================================
+   DOODLES & GRAPHIC ACCENTS
+   ========================================= */
+.doodle {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0; /* Animated in JS */
+    overflow: hidden;
+    z-index: 4;
+}
+
+.doodle img {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    max-width: none;
+    object-fit: fill;
+}
+
+/* Major accent (Crown) over the Avatar */
+.doodle-crown {
+    width: 90px;
+    height: 80px;
+    top: -45px;
+    right: 25px;
+    transform: rotate(15deg);
+    filter: drop-shadow(2px 2px 0px rgba(245, 161, 0, 0.4)); /* Subtle orange offset */
+}
+.doodle-crown img {
+    top: 0;
+    left: 0;
+}
+
+/* Large sparkle near AAYUSH */
+.doodle-sparkle-large {
+    width: 70px;
+    height: 70px;
+    top: -30px;
+    left: -40px;
+    transform: rotate(-10deg);
+    filter: drop-shadow(1px 1px 0px rgba(0,0,0,0.2));
+}
+.doodle-sparkle-large img {
+    bottom: 0;
+    left: 0;
+    top: auto;
+}
+
+/* Small sparkle near bottom right */
+.doodle-sparkle-small {
+    width: 45px;
+    height: 45px;
+    bottom: -5px;
+    right: 18%;
+    transform: rotate(5deg);
+}
+.doodle-sparkle-small img {
+    bottom: 0;
+    right: 0;
+    top: auto;
+    left: auto;
+}
+
+/* Motion lines near the typography */
+.doodle-lines {
+    width: 80px;
+    height: 80px;
+    top: 20%;
+    right: 15%;
+    transform: rotate(15deg);
+}
+.doodle-lines img {
+    top: 0;
+    right: 0;
+    left: auto;
+}
+
+/* Doodle Responsive fallbacks */
+@media (max-width: 1024px) {
+    .doodle-lines { display: none; }
+    .doodle-sparkle-small { right: 10%; }
+}
+@media (max-width: 768px) {
+    .doodle-crown { right: 5px; top: -20px; width: 60px; height: 50px; }
+    .doodle-sparkle-large { left: -10px; top: -30px; width: 50px; height: 50px; }
+    .doodle-sparkle-small { display: none; }
 }
 
 /* Responsive Fallbacks */

@@ -178,6 +178,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 6. Support info enters
       .addLabel("support", "reveal+=0.4")
+      
+      // Graphic Accents / Doodles pop in
+      .fromTo(".doodle", 
+          { opacity: 0, scale: 0.5 },
+          { opacity: 0.8, scale: 1, duration: 0.6, stagger: 0.1, ease: "back.out(2)" },
+      "support-=0.2")
+
       .to(".hero-label-name", {
           opacity: 1,
           y: 0,
@@ -221,6 +228,20 @@ document.addEventListener("DOMContentLoaded", () => {
                   scale: 0.85, // shrinks slightly as avatar rises
                   opacity: 0.5, // fades slightly
                   duration: 2,
+                  ease: "sine.inOut",
+                  yoyo: true,
+                  repeat: -1
+              });
+              
+              // Subtle idle motion for graphic accents
+              gsap.to(".doodle", {
+                  y: -3,
+                  rotation: "+=3",
+                  duration: 2.5,
+                  stagger: {
+                      each: 0.2,
+                      from: "random"
+                  },
                   ease: "sine.inOut",
                   yoyo: true,
                   repeat: -1
